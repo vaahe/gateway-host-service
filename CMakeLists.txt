@@ -5,15 +5,18 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
     add_definitions(-DAPP_ENV_DEV)
 endif()
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core)
+enable_testing()
+
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Test)
 
 qt_standard_project_setup()
 
 qt_add_executable(gateway-host-service
     main.cpp
 
-    src/database/databasemanager.h
-    src/database/databasemanager.cpp
+    src/database/database_manager.h
+    src/database/database_manager.cpp
+    src/database/database_manager_test.cpp
 
     src/services/edge_gateway/edge_gateway.h
     src/services/edge_gateway/edge_gateway.cpp
@@ -21,15 +24,31 @@ qt_add_executable(gateway-host-service
 
 
 target_link_libraries(gateway-host-service
-    PRIVATE
-        Qt::Core
+    PRIVATE Qt::Core
 )
 
 include(GNUInstallDirs)
 target_include_directories(gateway-host-service
-    PRIVATE
-        ${PROJECT_SOURCE_DIR}/src
+    PRIVATE ${PROJECT_SOURCE_DIR}/src
 )
+
+# Function to add a Qt Test executable for a module
+# function(add_qt_test target_name test_file implementation_files)
+#     qt_add_executable(${target_name}
+#         ${test_file}
+#         ${implementation_files}
+#     )
+#     target_include_directories(${target_name}
+#         PRIVATE Qt::Core Qt::Test
+#     )
+#     add_test(NAME ${target_name} COMMAND ${target_name})
+# endfunction()
+
+
+# add_qt_test(database_manager_test
+#     src/database/database_manager_test.cpp
+#     src/database/database_manager.cpp
+# )
 
 install(TARGETS gateway-host-service
     BUNDLE  DESTINATION .
