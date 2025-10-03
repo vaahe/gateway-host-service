@@ -14,6 +14,9 @@ qt_add_executable(gateway-host-service
 
     src/database/databasemanager.h
     src/database/databasemanager.cpp
+
+    src/services/edge_gateway/edge_gateway.h
+    src/services/edge_gateway/edge_gateway.cpp
 )
 
 
@@ -23,6 +26,10 @@ target_link_libraries(gateway-host-service
 )
 
 include(GNUInstallDirs)
+target_include_directories(gateway-host-service
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/src
+)
 
 install(TARGETS gateway-host-service
     BUNDLE  DESTINATION .
