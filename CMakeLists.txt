@@ -1,13 +1,21 @@
 cmake_minimum_required(VERSION 3.19)
 project(gateway-host-service LANGUAGES CXX)
 
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
+    add_definitions(-DAPP_ENV_DEV)
+endif()
+
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core)
 
 qt_standard_project_setup()
 
 qt_add_executable(gateway-host-service
     main.cpp
+
+    src/database/databasemanager.h
+    src/database/databasemanager.cpp
 )
+
 
 target_link_libraries(gateway-host-service
     PRIVATE
